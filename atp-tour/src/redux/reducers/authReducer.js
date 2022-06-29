@@ -5,7 +5,6 @@ const reducers = (state = {}, action) => {
         case LOGIN_SUCCESS:
             return { ...state, loggedUser: action.user, loginError: '' };
         case LOGIN_FAILURE:
-            console.log(333);
             return { ...state, loginError: action.error };
         default:
             return state;
