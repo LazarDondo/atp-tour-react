@@ -42,10 +42,10 @@ class LoginForm extends React.Component {
         }
     }
 
-    renderError = (submitted, message) => {
-        if (submitted && message) {
+    renderError = (condition, message) => {
+        if (condition && message) {
             return (
-                <div className="invalid-feedback">{message}</div>
+                <div id="errorMessageDiv" className=" alert alert-danger">{message}</div>
             );
         }
     }
@@ -57,6 +57,7 @@ class LoginForm extends React.Component {
             this.props.onSubmit(formValues);
         }
     }
+    
 
     render() {
         const { isSubmitted, username, password } = this.state;
@@ -72,8 +73,9 @@ class LoginForm extends React.Component {
                         className={'form-control ' + (isSubmitted && (!password || password.length<5) ? 'is-invalid' : '')} label="Password" />
                     {this.renderError(isSubmitted, this.passwordValidation(password))}
                 </div>
-                {this.renderError(this.props.loginError, 'Invalid username or password')}
+                               
                 <div className="form-group">
+                {this.renderError(this.props.loginError, 'Invalid username or password')}
                     <button className="btn btn-primary">Login</button>
                     <Link to="/register" className="btn btn-link">Register</Link>
                 </div>
