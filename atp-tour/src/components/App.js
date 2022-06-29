@@ -1,12 +1,19 @@
 import React from 'react';
-import { Route, Switch, BrowserRouter } from "react-router";
+import { Route, Routes , BrowserRouter } from "react-router-dom";
 import Login from './login/Login';
+import Header from './navigation/Header';
 import './App.css';
 
 const App = ()=>{
   return (
     <div>
-      App
+      <BrowserRouter>
+      <Header/>
+
+        <Routes>
+            <Route exact path="/" element={<Login/>} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

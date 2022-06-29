@@ -1,0 +1,20 @@
+.center_div {
+    position: fixed;
+    left: 60%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.form-group {
+    padding: 5px;
+    width: 500px;
+}
+
+#loginError {
+    margin-left: 5px;
+    width: 400px;
+}
+
+.invalid-feedback {
+    display: inline;
+}
