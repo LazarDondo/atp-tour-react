@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import validator from 'validator';
+import FormInput from '../form/FormInput';
+import FormSubmitNotification from '../form/FormSubmitNotification';
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -14,17 +16,8 @@ class LoginForm extends React.Component {
         };
     }
 
-
-    renderField = ({ label, input, type, name, className }) => {
-        return (
-            <>
-                <label htmlFor={name}>{label}</label>
-                <input {...input} value={input.value} type={type} name={name} className={className} />
-            </>
-        );
-    }
-
-    usernameValidation = (username) => {
+    usernameValidation = () => {
+        const { username } = this.state;
         if (!username) {
             return 'Username is required';
         }
@@ -33,7 +26,8 @@ class LoginForm extends React.Component {
         }
     }
 
-    passwordValidation = (password) => {
+    passwordValidation = () => {
+        const { password } = this.state;
         if (!password) {
             return 'Password is required';
         }
@@ -42,40 +36,36 @@ class LoginForm extends React.Component {
         }
     }
 
-    renderError = (condition, message) => {
-        if (condition && message) {
-            return (
-                <div id="errorMessageDiv" className=" alert alert-danger">{message}</div>
-            );
-        }
+    usernameFieldValidation = () => {
+        const { isSubmitted, username } = this.state;
+        return isSubmitted && (!username || !validator.isEmail(username));
+    }
+
+    passwordFieldValidation = () => {
+        const { isSubmitted, password } = this.state;
+        return isSubmitted && (!password || password.length < 5);
     }
 
     onSubmit = (formValues) => {
         const { username, password } = formValues;
         this.setState({ isSubmitted: true, username, password });
-        if (username && password && validator.isEmail(username) && password.length>5) {
+        if (username && password && validator.isEmail(username) && password.length > 5) {
             this.props.onSubmit(formValues);
         }
     }
-    
 
     render() {
-        const { isSubmitted, username, password } = this.state;
+        const { isSubmitted } = this.state;
         return (
             <form onSubmit={this.props.handleSubmit(this.onSubmit)} >
-                <div className='form-group'>
-                    <Field name='username' component={this.renderField} type='text'
-                        className={'form-control ' + (isSubmitted && (!username || !validator.isEmail(username)) ? 'is-invalid' : '')} label="Username" />
-                    {this.renderError(isSubmitted, this.usernameValidation(username))}
-                </div>
-                <div className='form-group'>
-                    <Field name='password' component={this.renderField} type='password'
-                        className={'form-control ' + (isSubmitted && (!password || password.length<5) ? 'is-invalid' : '')} label="Password" />
-                    {this.renderError(isSubmitted, this.passwordValidation(password))}
-                </div>
-                               
+                <FormInput name="username" type="text" label="Username" fieldValidation={this.usernameFieldValidation()}
+                    isSubmitted={isSubmitted} errorMessage={this.usernameValidation()} />
+
+                <FormInput name="password" type="password" label="Password" fieldValidation={this.passwordFieldValidation()}
+                    isSubmitted={isSubmitted} errorMessage={this.passwordValidation()} />
+
                 <div className="form-group">
-                {this.renderError(this.props.loginError, 'Invalid username or password')}
+                    <FormSubmitNotification errorCondition={this.props.loginError} errorMessage='Invalid username or password'/>
                     <button className="btn btn-primary">Login</button>
                     <Link to="/register" className="btn btn-link">Register</Link>
                 </div>

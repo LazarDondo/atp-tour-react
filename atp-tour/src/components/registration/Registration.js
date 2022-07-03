@@ -6,7 +6,7 @@ import './Registration.css';
 
 const Register = (props) => {
 
-    const { register, registrationError } = props;
+    const { register, registrationSuccess, registrationError } = props;
 
     const onSubmit = formValues => {
         register(formValues);
@@ -15,15 +15,17 @@ const Register = (props) => {
     return (
         <div className='col-md-6 col-md-offset-3 center_div '>
             <h2>Register</h2>
-            <RegistrationForm onSubmit={onSubmit} registrationError={registrationError} />
+            <RegistrationForm onSubmit={onSubmit} registrationSuccess={registrationSuccess} registrationError={registrationError} />
         </div>
     );
 
 }
 
 const mapStateToProps = (state) => {
+    console.log(state);
     return {
-        registrationError: state.auth.registrationError
+        registrationError: state.auth.registrationError,
+        registrationSuccess: state.auth.registrationSuccess
     };
 }
 

@@ -1,17 +1,15 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import validator from 'validator';
+import FormInput from '../form/FormInput';
+import FormSubmitNotification from '../form/FormSubmitNotification';
 
 
 class RegistrationForm extends React.Component {
 
-    successStatus='S';
-    errorStatus='E';
-
     constructor(props) {
         super(props);
-        //this.props.logout() reset login status
         this.state = {
             firstName: '',
             lastName: '',
@@ -21,16 +19,18 @@ class RegistrationForm extends React.Component {
         };
     }
 
-    renderField = ({ label, input, type, name, className }) => {
-        return (
-            <>
-                <label htmlFor={name}>{label}</label>
-                <input {...input} value={input.value} type={type} name={name} className={className} />
-            </>
-        );
+    usernameFieldValidation = () => {
+        const { isSubmitted, username } = this.state;
+        return isSubmitted && (!username || !validator.isEmail(username));
     }
 
-    usernameValidation = (username) => {
+    passwordFieldValidation = () => {
+        const { isSubmitted, password } = this.state;
+        return isSubmitted && (!password || password.length < 5);
+    }
+
+    usernameValidation = () => {
+        const username = this.state.username;
         if (!username) {
             return 'Username is required';
         }
@@ -39,7 +39,8 @@ class RegistrationForm extends React.Component {
         }
     }
 
-    passwordValidation = (password) => {
+    passwordValidation = () => {
+        const password = this.state.password;
         if (!password) {
             return 'Password is required';
         }
@@ -48,17 +49,8 @@ class RegistrationForm extends React.Component {
         }
     }
 
-    renderNotification = (condition, message, classFlag) => {
-        const className = classFlag === this.successStatus ? 'alert alert-success' : 'alert alert-danger';
-        if (condition && message) {
-            console.log(message);
-            return (
-                <div id="notificationMessageDiv" className={className}>{message}</div>
-            );
-        }
-    }
-
     onSubmit = (formValues) => {
+        this.registrationSuccess=''; this.registrationError='';
         const { firstName, lastName, username, password } = formValues;
         this.setState({ isSubmitted: true, firstName, lastName, username, password });
         if (firstName && lastName && username && password && validator.isEmail(username) && password.length > 5) {
@@ -67,38 +59,20 @@ class RegistrationForm extends React.Component {
     }
 
     render() {
-        console.log(444);
-        const { firstName, lastName, isSubmitted, username, password } = this.state;
+        const { firstName, lastName, isSubmitted } = this.state;
         return (
             <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                <div className='form-group'>
-                    <Field name='firstName' component={this.renderField} type='text'
-                        className={'form-control ' + (isSubmitted && !firstName ? 'is-invalid' : '')} label="First Name" />
-                </div>
-                {this.renderNotification(isSubmitted && !firstName, 'First name is required', this.errorStatus)}
-
-                <div className='form-group'>
-                    <Field name='lastName' component={this.renderField} type='text'
-                        className={'form-control ' + (isSubmitted && !lastName ? 'is-invalid' : '')} label="Last name" />
-                </div>
-                {this.renderNotification(isSubmitted && !lastName, 'Last name is required', this.errorStatus)}
-
-                <div className='form-group'>
-                    <Field name='username' component={this.renderField} type='text'
-                        className={'form-control ' + (isSubmitted && (!username || !validator.isEmail(username)) ? 'is-invalid' : '')} label="Username" />
-                </div>
-                {this.renderNotification(isSubmitted, this.usernameValidation(username), this.errorStatus)}
-
-                <div className='form-group'>
-                    <Field name='password' component={this.renderField} type='password'
-                        className={'form-control ' + (isSubmitted && (!password || password.length < 5) ? 'is-invalid' : '')} label="Password" />
-
-                </div>
-                {this.renderNotification(isSubmitted, this.passwordValidation(username), this.errorStatus)}
-
-                {this.renderNotification(isSubmitted && !this.props.registrationError, 'Registration was successfull', this.successStatus)}
-                {this.renderNotification(isSubmitted && this.props.registrationError, 'Username already exists. Please choose another username', this.errorStatus)}
+                <FormInput name="firstName" type="text" label="First Name" fieldValidation={isSubmitted && !firstName}
+                    isSubmitted={isSubmitted} errorMessage={firstName ? '' : 'First Name is required'} />
+                <FormInput name="lastName" type="text" label="Last Name" fieldValidation={isSubmitted && !lastName}
+                    isSubmitted={isSubmitted} errorMessage={lastName ? '' : 'Last Name is required'} />
+                <FormInput name="username" type="text" label="Username" fieldValidation={this.usernameFieldValidation()}
+                    isSubmitted={isSubmitted} errorMessage={this.usernameFieldValidation()} />
+                <FormInput name="password" type="password" label="Password" fieldValidation={this.passwordFieldValidation()}
+                    isSubmitted={isSubmitted} errorMessage={this.passwordValidation()} />
                 <div className="form-group">
+                    <FormSubmitNotification successCondition={this.props.registrationSuccess} errorCondition={this.props.registrationError}
+                    successMessage='Registration was successfull' errorMessage='Username already exists. Please choose another username'/>
                     <button className="btn btn-primary">Register</button>
                     <Link to="/login" className="btn btn-link">Login</Link>
                 </div>

@@ -1,5 +1,4 @@
-import { LOGIN_FAILURE, LOGIN_SUCCESS, REGISTRATION_SUCCESS, REGISTRATION_FAILURE,
-GET_PLAYERS } from "./types";
+import { LOGIN_FAILURE, LOGIN_SUCCESS, REGISTRATION_SUCCESS, REGISTRATION_FAILURE } from "./types";
 import atp from '../../apis/atp';
 
 
@@ -18,7 +17,7 @@ export const register = formValues => async dispatch => {
     await atp.post('/user/register', formValues)
         .then(
             () => {
-                dispatch({ type: REGISTRATION_SUCCESS, registrationError: '' });
+                dispatch({ type: REGISTRATION_SUCCESS, registrationSuccess: 'S' });
             },
             registrationError => {
                 dispatch({ type: REGISTRATION_FAILURE, registrationError });

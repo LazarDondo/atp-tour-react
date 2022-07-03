@@ -5,18 +5,3 @@
     transform: translate(-50%, -50%);
 }
 
-.form-group {
-    padding: 5px;
-    width: 500px;
-}
-
-#loginError {
-    margin-left: 5px;
-    width: 400px;
-}
-
-#errorMessageDiv{
-    padding: 7px;
-    margin-top:10px;
-}
-

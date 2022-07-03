@@ -1,0 +1,8 @@
+.form-group {
+    width: 400px;
+    margin-bottom: 4px;
+}
+
+#errorMessage{
+    color: #dc3545;
+}

@@ -7,7 +7,7 @@ const reducers = (state = {}, action) => {
         case LOGIN_FAILURE:
             return { ...state, loginError: action.loginError };
         case REGISTRATION_SUCCESS:
-            return { ...state, registrationError: action.registrationError };
+            return { ...state, registrationSuccess: action.registrationSuccess };
         case REGISTRATION_FAILURE:
             return { ...state, registrationError: action.registrationError };
         default:
