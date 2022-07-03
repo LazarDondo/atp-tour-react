@@ -1,10 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import { login } from '../../redux/actions';
 import logo from '../images/logo.png';
 import './Header.css';
 
 
 class Header extends React.Component {
+
+
+    greetingsMessage(){
+        if(this.props.loggedUser){
+            return (
+                <div id="greetingsMessage">Greetings <br />{this.props.loggedUser.firstName + ' ' + this.props.loggedUser.lastName}</div>
+            );
+        }
+    }
 
     render() {
 
@@ -28,7 +39,7 @@ class Header extends React.Component {
                         </li>
                     </ul>
                     <div id="atp" className="navbar-brand" to="#"><img id="logo" src={logo} alt='logo' /></div>
-                    <div id="greetingsMessage">Greetings <br />''userinfo'</div>
+                    {this.greetingsMessage()}
                     <div>
                         <Link className="language" to="#" onClick="">eng</Link>
                         <Link className="language" to="#" onClick="">срп</Link>
@@ -41,4 +52,8 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+    return { loggedUser: state.auth.loggedUser};
+}
+
+export default connect(mapStateToProps, { login })(Header);

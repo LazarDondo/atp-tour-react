@@ -9,7 +9,6 @@ const reducers = (state = {}, action) => {
         case REGISTRATION_SUCCESS:
             return { ...state, registrationError: action.registrationError };
         case REGISTRATION_FAILURE:
-            console.log()
             return { ...state, registrationError: action.registrationError };
         default:
             return state;
