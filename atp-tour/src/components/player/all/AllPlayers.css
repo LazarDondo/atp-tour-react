@@ -1,0 +1,26 @@
+ #players {
+   text-align: center;
+   margin-top: 10px;
+   width: 60%;
+ }
+
+ #playersTitle {
+   margin-left: 10px;
+ }
+
+ .row {
+   padding-left: 10px;
+   width: 100%;
+ }
+
+ #players th {
+   padding-top: 12px;
+   padding-bottom: 12px;
+   text-align: center;
+   background-color: #03b5fc;
+   color: white;
+ }
+
+ #searchButton {
+   margin-top: 25px;
+ }

@@ -22,7 +22,6 @@ const Register = (props) => {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         registrationError: state.auth.registrationError,
         registrationSuccess: state.auth.registrationSuccess
