@@ -1,0 +1,15 @@
+.pagination-element {
+  color: blue;
+  text-decoration: none;
+  padding: 1px 8px;
+  margin-left: 10px;
+  border-width: 1px;
+  background-color: white;
+}
+
+.selected {
+  background-color: #03b5fc;
+  color: white;
+}
+
+.pagination-element:hover:not(.active) {background-color: #ddd;}

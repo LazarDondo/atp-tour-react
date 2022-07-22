@@ -1,0 +1,25 @@
+.numbers-pagination {
+  color: blue;
+  text-decoration: none;
+  padding: 1px 8px;
+  opacity: 0.5;
+  margin-left: 5px;
+  border-width: 1px;
+}
+
+table {
+  margin-left: 10px;
+}
+
+
+table tr:nth-child(even) {
+  background-color: #51bbf5;
+}
+
+table tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+table tr:hover {
+  background-color: #ddd;
+}
