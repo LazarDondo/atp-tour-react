@@ -64,7 +64,7 @@ export const BasicTable = ({ id, columns, data, hiddenColumns, action }) => {
         }
         else{
             return (
-                <div>
+                <div id="emptyTable">
                     No data to display!
                 </div>
             )

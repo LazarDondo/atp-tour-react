@@ -23,3 +23,7 @@ table tr:nth-child(odd) {
 table tr:hover {
   background-color: #ddd;
 }
+
+#emptyTable{
+  margin-left: 10px;
+}
