@@ -1,6 +1,6 @@
 import {
     LOGIN_FAILURE, LOGIN_SUCCESS, REGISTRATION_SUCCESS, REGISTRATION_FAILURE,
-    GET_PLAYERS
+    GET_PLAYERS, SAVE_PLAYER, SAVE_PLAYER_ERROR
 } from "./types";
 import atp from '../../apis/atp';
 
@@ -46,9 +46,42 @@ export const get_players = (pagingValues, firstName, lastName, birthCountry) => 
                 dispatch({ type: GET_PLAYERS, players: result.data });
             },
             error => {
-                dispatch({ type: GET_PLAYERS, players:{content:[]} });
+                dispatch({ type: GET_PLAYERS, players: { content: [] } });
             });
 
     //const result = await atp.get('/player', { params: params });
     //dispatch({ type: GET_PLAYERS, players: result.data });
 }
+
+export const add_player = player => async dispatch => {
+    atp.post('/player', player)
+        .then(
+            (savedPlayer) => {
+                dispatch({ type: SAVE_PLAYER, savedPlayer: savedPlayer.data, successMessage: 'Successfully added new player' });
+            },
+            savePlayerError => {
+                dispatch({ type: SAVE_PLAYER, savePlayerError });
+            });
+}
+
+export const update_player = player => async dispatch => {
+    atp.put('/player', player)
+        .then(
+            (savedPlayer) => {
+                dispatch({ type: SAVE_PLAYER, savedPlayer: savedPlayer.data, successMessage: 'Player updated successfully' });
+            },
+            savePlayerError => {
+                dispatch({ type: SAVE_PLAYER_ERROR, savePlayerError });
+            });
+}
+
+export const find_player = id => async dispatch => {
+    atp.get('/player/' + id)
+        .then(
+            (foundPlayer) => {
+                dispatch({ type: SAVE_PLAYER, savedPlayer: foundPlayer.data, successMessage: 'Player found successfully' });
+            },
+            findPlayerError => {
+                dispatch({ type: SAVE_PLAYER_ERROR, findPlayerError });
+            });
+};

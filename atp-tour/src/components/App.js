@@ -4,7 +4,7 @@ import Login from './login/Login';
 import Header from './navigation/Header';
 import './App.css';
 import Registration from './registration/Registration';
-import AllPlayers from './player/all/AllPlayers';
+import Player from './player/Player';
 
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
           <Route exact path="/" element={<Login />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Registration />} />
-          <Route exact path="/player" element={<AllPlayers />} />
+          <Route exact path="/player" element={<Player />} />
         </Routes>
       </BrowserRouter>
     </div>
