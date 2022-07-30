@@ -3,7 +3,7 @@ import { useTable } from "react-table";
 import './BasicTable.css';
 import PaginationFooter from "./PaginationFooter";
 
-export const BasicTable = ({ id, columns, data, hiddenColumns, action }) => {
+export const BasicTable = ({ id, columns, data, hiddenColumns, action, rowClickAction }) => {
     const initialState = { hiddenColumns };
     const [sortColumn, setSortColumn] = useState('');
     const [sortDirection, setSortDirection] = useState('asc');
@@ -30,39 +30,45 @@ export const BasicTable = ({ id, columns, data, hiddenColumns, action }) => {
         rows,
         prepareRow,
     } = useTable({ columns, data: data.content, initialState });
-    
-    const renderTable = ()=>{
-        if(data.content.length>0){
+
+    const onRowClick = (data) => {
+        if (rowClickAction) {
+            rowClickAction(data);
+        }
+    }
+
+    const renderTable = () => {
+        if (data.content.length > 0) {
             return (
                 <>
-                 <table {...getTableProps()} id={id} className="table table-bordered">
-                <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map(column => (
-                                <th onClick={() => sortTable(column.id)} {...column.getHeaderProps({ style: { width: column.width } })}>{column.render("Header")} <i className="fa fa-sort"></i></th>
+                    <table {...getTableProps()} id={id} className="table table-bordered">
+                        <thead>
+                            {headerGroups.map(headerGroup => (
+                                <tr {...headerGroup.getHeaderGroupProps()}>
+                                    {headerGroup.headers.map(column => (
+                                        <th onClick={() => sortTable(column.id)} {...column.getHeaderProps({ style: { width: column.width } })}>{column.render("Header")} <i className="fa fa-sort"></i></th>
+                                    ))}
+                                </tr>
                             ))}
-                        </tr>
-                    ))}
-                </thead>
-                <tbody {...getTableBodyProps()}>
-                    {rows.map(row => {
-                        prepareRow(row)
-                        return (
-                            <tr {...row.getRowProps({ style: { height: '30px' } })}>
-                                {row.cells.map(cell => {
-                                    return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                                })}
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
-            <PaginationFooter data={{ number: data.number, totalPages: data.totalPages, size: data.size, sort: sortColumn + ',' + sortDirection }} action={action} />
+                        </thead>
+                        <tbody {...getTableBodyProps()}>
+                            {rows.map(row => {
+                                prepareRow(row)
+                                return (
+                                    <tr {...row.getRowProps({ style: { height: '30px' }, onClick: () => { onRowClick(row.original) } })}>
+                                        {row.cells.map(cell => {
+                                            return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                                        })}
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                    <PaginationFooter data={{ number: data.number, totalPages: data.totalPages, size: data.size, sort: sortColumn + ',' + sortDirection }} action={action} />
                 </>
             )
         }
-        else{
+        else {
             return (
                 <div id="emptyTable">
                     No data to display!

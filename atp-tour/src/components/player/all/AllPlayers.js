@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { BasicTable } from "../../table/BasicTable";
-import { get_players } from "../../../redux/actions";
+import { get_players, find_player } from "../../../redux/actions";
 import './AllPlayers.css';
 import CountrySelect from "../../country/CountrySelect";
 
@@ -36,11 +36,15 @@ class AllPlayers extends React.Component {
             width: '2%'
         },
         {
+            Header: 'Id',
+            accessor: 'id'
+        },
+        {
             Header: 'First Name',
             accessor: 'firstName'
         },
         {
-            Header: 'First Name',
+            Header: 'Name',
             width: '15%',
             accessor: 'lastName',
             Cell: ({ row }) => {
@@ -54,8 +58,15 @@ class AllPlayers extends React.Component {
         },
         {
             Header: 'Birth Country',
-            accessor: 'birthCountry.name',
-            width: '8%'
+            accessor: 'birthCountry',
+            width: '8%',
+            Cell: ({ row }) => {
+                return (
+                    <div>
+                        <span className="class-for-name">{row.values.birthCountry.name} </span>
+                    </div>
+                )
+            }
         },
         {
             Header: 'Date of birth',
@@ -78,27 +89,31 @@ class AllPlayers extends React.Component {
         this.birthCountry = value;
     }
 
+    rowClickAction = (value) => {
+        this.props.find_player(value.id);
+    }
     render() {
         return (
             <>
                 <h2 id="playersTitle">Players</h2>
                 <div className="row">
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                         <label htmlFor="firstName">First Name</label>
                         <input id="search" className="form-control" type="text" name="firstName" ref={this.firstName} />
                     </div>
-                    <div className="col-md-2">
+                    <div className="col-md-3">
                         <label htmlFor="lastName">Last Name</label>
                         <input id="search" className="form-control" type="text" name="lastName" ref={this.lastName} />
                     </div>
-                    <div className="col-md-2">
-                        <CountrySelect changeCountryValue={this.changeCountryValue} />
+                    <div className="col-md-5">
+                        <CountrySelect id='countrySelect' changeCountryValue={this.changeCountryValue} label='Birth Country' filter={true} />
                     </div>
                     <div className="col-md-1">
                         <button id="searchButton" className="btn btn-primary" onClick={() => this.search()}>Search</button>
                     </div>
                 </div >
-                {this.props.players ? <BasicTable id="players" columns={this.columns} data={this.props.players} hiddenColumns={['firstName']} action={this.changePage} /> : ''}
+                {this.props.players ? <BasicTable id="players" columns={this.columns} data={this.props.players}
+                    hiddenColumns={['id', 'firstName']} action={this.changePage} rowClickAction={this.rowClickAction} /> : ''}
             </>
         );
     }
@@ -110,4 +125,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { get_players })(AllPlayers);
+export default connect(mapStateToProps, { get_players, find_player })(AllPlayers);
