@@ -10,8 +10,8 @@ class LoginForm extends React.Component {
         super(props);
         //this.props.logout() reset login status
         this.state = {
-            username: this.props.loggedUser,
-            password: this.props.loggedUser,
+            username: '',
+            password: '',
             isSubmitted: false
         };
     }
