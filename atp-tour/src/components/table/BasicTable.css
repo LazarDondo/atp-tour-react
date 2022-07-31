@@ -7,10 +7,19 @@
   border-width: 1px;
 }
 
-table {
+.basic-table {
   margin-left: 10px;
+  text-align: center;
+  margin-top: 10px;
 }
 
+.basic-table th {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  text-align: center !important;
+  background-color: #03b5fc !important;
+  color: white !important;
+}
 
 table tr:nth-child(even) {
   background-color: #51bbf5;
@@ -24,6 +33,6 @@ table tr:hover {
   background-color: #ddd;
 }
 
-#emptyTable{
+#emptyTable {
   margin-left: 10px;
 }

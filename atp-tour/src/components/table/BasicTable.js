@@ -41,7 +41,7 @@ export const BasicTable = ({ id, columns, data, hiddenColumns, action, rowClickA
         if (data.content.length > 0) {
             return (
                 <>
-                    <table {...getTableProps()} id={id} className="table table-bordered">
+                    <table {...getTableProps()} id={id} className="table table-bordered basic-table">
                         <thead>
                             {headerGroups.map(headerGroup => (
                                 <tr {...headerGroup.getHeaderGroupProps()}>

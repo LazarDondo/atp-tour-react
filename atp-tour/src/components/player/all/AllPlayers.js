@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from 'react-redux';
 import { BasicTable } from "../../table/BasicTable";
 import { get_players, find_player } from "../../../redux/actions";
-import './AllPlayers.css';
 import SyncSelect from '../../select-fields/SyncSelect';
+import './AllPlayers.css';
 
 
 class AllPlayers extends React.Component {
@@ -13,7 +13,6 @@ class AllPlayers extends React.Component {
         this.firstName = React.createRef();
         this.lastName = React.createRef();
     }
-
 
     componentDidMount() {
         this.props.get_players();
@@ -96,22 +95,22 @@ class AllPlayers extends React.Component {
     render() {
         return (
             <>
-                <h2 id="playersTitle">Players</h2>
+                <h2 className="table-title">Players</h2>
                 <div className="row">
                     <div className="col-md-3">
                         <label htmlFor="firstName">First Name</label>
-                        <input id="search" className="form-control" type="text" name="firstName" ref={this.firstName} />
+                        <input id="searchFirstName" className="form-control" type="text" name="firstName" ref={this.firstName} />
                     </div>
                     <div className="col-md-3">
                         <label htmlFor="lastName">Last Name</label>
-                        <input id="search" className="form-control" type="text" name="lastName" ref={this.lastName} />
+                        <input id="searchLastName" className="form-control" type="text" name="lastName" ref={this.lastName} />
                     </div>
                     <div className="col-md-5">
                         <SyncSelect name='birthCountry' label='Birth Country' changeFieldValue={this.changeCountryValue}
                             url='country' getLabel={country => country.name} getValue={country => country} />
                     </div>
                     <div className="col-md-1">
-                        <button id="searchButton" className="btn btn-primary" onClick={() => this.search()}>Search</button>
+                        <button className="btn btn-primary search-button" onClick={() => this.search()}>Search</button>
                     </div>
                 </div >
                 {this.props.players ? <BasicTable id="players" columns={this.columns} data={this.props.players}

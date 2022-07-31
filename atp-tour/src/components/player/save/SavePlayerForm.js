@@ -20,7 +20,6 @@ const SavePlayerForm = ({ onSubmit, handleSubmit, successMessage, savePlayerErro
 
 
     const onFormSubmit = () => {
-        console.log(player);
         setIsSubmitted(true);
         const { firstName, lastName, birthCountry, dateOfBirth } = player;
         if (firstName && lastName && birthCountry && dateOfBirth) {
@@ -94,7 +93,7 @@ const SavePlayerForm = ({ onSubmit, handleSubmit, successMessage, savePlayerErro
 
             <div className="form-group">
                 <FormSubmitNotification successCondition={isSubmitted && successMessage} errorCondition={savePlayerError} successMessage={successMessage} errorMessage='Error saving player' />
-                <button id="playerButton" className="btn btn-primary">{player.rank ? 'Update' : 'Add'}</button>
+                <button id="playerButton" className="btn btn-primary save-button">{player.rank ? 'Update' : 'Add'}</button>
                 <button id="clearButton" type="button" onClick={clearForm} className="btn btn-secondary">Clear Form</button>
             </div>
         </form >
