@@ -7,3 +7,7 @@ export const REGISTRATION_FAILURE ='registrationFailure';
 export const GET_PLAYERS='getPlayers';
 export const SAVE_PLAYER='savePlayer';
 export const SAVE_PLAYER_ERROR='savePlayerError';
+
+export const GET_TOURNAMENTS='getTournaments';
+export const SAVE_TOURNAMENT='saveTournament';
+export const SAVE_TOURNAMENT_ERROR='saveTournamentError';
