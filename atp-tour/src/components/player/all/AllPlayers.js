@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { BasicTable } from "../../table/BasicTable";
 import { get_players, find_player } from "../../../redux/actions";
 import './AllPlayers.css';
-import CountrySelect from "../../country/CountrySelect";
+import SyncSelect from '../../select-fields/SyncSelect';
 
 
 class AllPlayers extends React.Component {
@@ -92,6 +92,7 @@ class AllPlayers extends React.Component {
     rowClickAction = (value) => {
         this.props.find_player(value.id);
     }
+
     render() {
         return (
             <>
@@ -106,7 +107,8 @@ class AllPlayers extends React.Component {
                         <input id="search" className="form-control" type="text" name="lastName" ref={this.lastName} />
                     </div>
                     <div className="col-md-5">
-                        <CountrySelect id='countrySelect' changeCountryValue={this.changeCountryValue} label='Birth Country' filter={true} />
+                        <SyncSelect name='birthCountry' label='Birth Country' changeFieldValue={this.changeCountryValue}
+                            url='country' getLabel={country => country.name} getValue={country => country} />
                     </div>
                     <div className="col-md-1">
                         <button id="searchButton" className="btn btn-primary" onClick={() => this.search()}>Search</button>

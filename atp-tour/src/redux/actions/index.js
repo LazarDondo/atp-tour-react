@@ -48,9 +48,6 @@ export const get_players = (pagingValues, firstName, lastName, birthCountry) => 
             error => {
                 dispatch({ type: GET_PLAYERS, players: { content: [] } });
             });
-
-    //const result = await atp.get('/player', { params: params });
-    //dispatch({ type: GET_PLAYERS, players: result.data });
 }
 
 export const add_player = player => async dispatch => {

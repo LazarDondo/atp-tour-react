@@ -16,7 +16,7 @@ class FormInput extends React.Component {
         return (
             <>
                 <label htmlFor={name}>{label}</label>
-                <input {...input} value={inputValue} type={type} name={input.name} className={className} onChange={input.onChange} readOnly={this.props.readOnly} />
+                <input {...input} id={input.id} value={inputValue} type={type} name={input.name} className={className} onChange={input.onChange} readOnly={this.props.readOnly} />
             </>
         );
     }
@@ -31,11 +31,11 @@ class FormInput extends React.Component {
     }
 
     render() {
-        const { name, type, fieldValidation, label, onChange } = this.props;
+        const { id, name, type, fieldValidation, label, onChange } = this.props;
 
         return (
             <div className='form-group'>
-                <Field name={name} component={this.renderField} type={type} onChange={onChange}
+                <Field id={id} name={name} component={this.renderField} type={type} onChange={onChange}
                     className={'form-control ' + (fieldValidation ? 'is-invalid' : '')} label={label} />
                 {this.renderError()}
             </div>

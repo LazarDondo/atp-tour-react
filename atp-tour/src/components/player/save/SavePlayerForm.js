@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import FormInput from '../../form/FormInput';
 import FormSubmitNotification from '../../form/FormSubmitNotification';
-import CountrySelect from '../../country/CountrySelect';
 import FormDatePicker from '../../form/FormDatePicker';
 import moment from 'moment';
+import SyncSelect from '../../select-fields/SyncSelect';
 
 
 const SavePlayerForm = ({ onSubmit, handleSubmit, successMessage, savePlayerError, savedPlayer }) => {
@@ -84,8 +84,9 @@ const SavePlayerForm = ({ onSubmit, handleSubmit, successMessage, savePlayerErro
                     <FormInput name="birthCountry" type="text" label="Birth Country" value={player.birthCountry.name}
                         onChange={(e) => changeCountryValue(e.target.value)} readOnly />
                     :
-                    <Field component={CountrySelect} changeCountryValue={changeCountryValue} name='birthCountry'
-                        label='Birth Country' errorMessage={birthCountryValidation()} isSubmitted={isSubmitted} />}
+                    <Field component={SyncSelect} name='birthCountry' label='Birth Country' changeFieldValue={changeCountryValue}
+                        errorMessage={birthCountryValidation()} isSubmitted={isSubmitted} url='country'
+                        getLabel={country => country.name} getValue={country => country} />}
             </div>
 
             <Field component={FormDatePicker} name="dateOfBirth" placeholder="MM/dd/yyyy" label='Date of Birth' dateValue={player.dateOfBirth}
@@ -94,7 +95,7 @@ const SavePlayerForm = ({ onSubmit, handleSubmit, successMessage, savePlayerErro
             <div className="form-group">
                 <FormSubmitNotification successCondition={isSubmitted && successMessage} errorCondition={savePlayerError} successMessage={successMessage} errorMessage='Error saving player' />
                 <button id="playerButton" className="btn btn-primary">{player.rank ? 'Update' : 'Add'}</button>
-                <button id="    " type="button" onClick={clearForm} className="btn btn-secondary">Clear Form</button>
+                <button id="clearButton" type="button" onClick={clearForm} className="btn btn-secondary">Clear Form</button>
             </div>
         </form >
     );
