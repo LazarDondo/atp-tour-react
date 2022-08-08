@@ -11,6 +11,7 @@ class AllTournaments extends React.Component {
         super();
         this.name = React.createRef();
         this.tournamentType = React.createRef();
+        this.hostCountry = React.createRef();
         this.tournamentTypes = [
             { label: 'All', value: 'All' },
             { label: 'Grand Slam', value: 'Grand Slam' },
@@ -32,6 +33,13 @@ class AllTournaments extends React.Component {
         this.props.get_tournaments(pagingValues, this.name.current.value, this.tournamentType.value, this.hostCountry);
     }
 
+    clear = () => {
+        this.name.current.value = '';
+        this.tournamentType.value = 'All';
+        this.hostCountry = 'All';
+        this.search();
+    }
+
     columns = [
         {
             Header: 'Id',
@@ -39,23 +47,27 @@ class AllTournaments extends React.Component {
         },
         {
             Header: 'Name',
+            width: '10%',
             accessor: 'name',
-            width: '10%'
+            sortValue: 'name',
         },
         {
             Header: 'Start Date',
+            width: '5%',
             accessor: 'startDate',
-            width: '5%'
+            sortValue: 'startDate',
         },
         {
             Header: 'Completion Date',
+            width: '5%',
             accessor: 'completionDate',
-            width: '5%'
+            sortValue: 'completionDate',
         },
         {
             Header: 'Host Country',
-            accessor: 'hostCountry',
             width: '8%',
+            accessor: 'hostCountry',
+            sortValue: 'hostCountry.name',
             Cell: ({ row }) => {
                 return (
                     <div>
@@ -66,8 +78,9 @@ class AllTournaments extends React.Component {
         },
         {
             Header: 'Type',
+            width: '7%',
             accessor: 'tournamentType',
-            width: '7%'
+            sortValue: 'tournamentType',
         }
     ];
 
@@ -97,12 +110,15 @@ class AllTournaments extends React.Component {
                             }
                         </select>
                     </div>
-                    <div className="col-md-5">
+                    <div className="col-md-4">
                         <SyncSelect name='birthCountry' label='Host Country' changeFieldValue={this.changeCountryValue}
-                            url='country' getLabel={country => country.name} getValue={country => country} />
+                            url='country' getLabel={country => country.name} getValue={country => country} showAll={true} />
                     </div>
                     <div className="col-md-1">
-                        <button className="btn btn-primary search-button" onClick={() => this.search()}>Search</button>
+                        <button className="btn btn-primary filter-button" onClick={() => this.search()}>Search</button>
+                    </div>
+                    <div className="col-md-1">
+                        <button className="btn btn-secondary filter-button" onClick={() => this.clear()}>Clear</button>
                     </div>
                 </div >
                 {this.props.tournaments ? <BasicTable id="tournaments" columns={this.columns} data={this.props.tournaments}

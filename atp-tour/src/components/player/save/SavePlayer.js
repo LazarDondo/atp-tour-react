@@ -18,7 +18,6 @@ class SavePlayer extends React.Component {
     render() {
         return (
             <div id="savePlayer">
-                {this.props.savedPlayer.rank? <h2 id="playerTitle">Update Player</h2>: <h2 id="playerTitle">Add Player</h2>}
                 <SavePlayerForm savedPlayer={this.props.savedPlayer} successMessage={this.props.successMessage} onSubmit={this.onSubmit} savePlayerError={this.props.savePlayerError} />
             </div>
         );

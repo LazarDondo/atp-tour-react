@@ -19,7 +19,6 @@ class SaveTournament extends React.Component {
     render() {
         return (
             <div id="saveTournament">
-                {this.props.savedTournament.rank? <h2 id="tournamentTitle">Update Tournament</h2>: <h2 id="tournamentTitle">Add Tournament</h2>}
                 <SaveTournamentForm savedTournament={this.props.savedTournament} successMessage={this.props.successMessage} onSubmit={this.onSubmit} saveTournamentError={this.props.saveTournamentError} />
             </div>
         );

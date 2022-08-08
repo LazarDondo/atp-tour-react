@@ -71,32 +71,35 @@ const SavePlayerForm = ({ onSubmit, handleSubmit, successMessage, savePlayerErro
     }
 
     return (
-        <form onSubmit={handleSubmit(onFormSubmit)} >
-            <FormInput name="firstName" type="text" label="First Name" fieldValidation={isSubmitted && !player.firstName} value={player.firstName}
-                onChange={(e) => changeFirstName(e.target.value)} isSubmitted={isSubmitted} errorMessage={firstNameValidation()} />
+        <>
+            {player.rank ? <h2 id="playerTitle">Update Player</h2> : <h2 id="playerTitle">Add Player</h2>}
+            <form onSubmit={handleSubmit(onFormSubmit)} >
+                <FormInput name="firstName" type="text" label="First Name" fieldValidation={isSubmitted && !player.firstName} value={player.firstName}
+                    onChange={(e) => changeFirstName(e.target.value)} isSubmitted={isSubmitted} errorMessage={firstNameValidation()} />
 
-            <FormInput name="lastName" type="text" label="Last Name" fieldValidation={isSubmitted && !player.lastName} value={player.lastName}
-                onChange={(e) => changeLastName(e.target.value)} isSubmitted={isSubmitted} errorMessage={lastNameValidation()} />
+                <FormInput name="lastName" type="text" label="Last Name" fieldValidation={isSubmitted && !player.lastName} value={player.lastName}
+                    onChange={(e) => changeLastName(e.target.value)} isSubmitted={isSubmitted} errorMessage={lastNameValidation()} />
 
-            <div className='form-group'>
-                {player.id ?
-                    <FormInput name="birthCountry" type="text" label="Birth Country" value={player.birthCountry.name}
-                        onChange={(e) => changeCountryValue(e.target.value)} readOnly />
-                    :
-                    <Field component={SyncSelect} name='birthCountry' label='Birth Country' changeFieldValue={changeCountryValue}
-                        errorMessage={birthCountryValidation()} isSubmitted={isSubmitted} url='country'
-                        getLabel={country => country.name} getValue={country => country} />}
-            </div>
+                <div className='form-group'>
+                    {player.id ?
+                        <FormInput name="birthCountry" type="text" label="Birth Country" value={player.birthCountry.name}
+                            onChange={(e) => changeCountryValue(e.target.value)} readOnly />
+                        :
+                        <Field component={SyncSelect} name='birthCountry' label='Birth Country' changeFieldValue={changeCountryValue}
+                            errorMessage={birthCountryValidation()} isSubmitted={isSubmitted} url='country'
+                            getLabel={country => country.name} getValue={country => country} />}
+                </div>
 
-            <Field component={FormDatePicker} name="dateOfBirth" placeholder="MM/dd/yyyy" label='Date of Birth' dateValue={player.dateOfBirth}
-                onChange={changeDate} maxDate={maximumDate} isSubmitted={isSubmitted} errorMessage={dateOfBirthValidation()} readOnly={player.id} />
+                <Field component={FormDatePicker} name="dateOfBirth" placeholder="MM/dd/yyyy" label='Date of Birth' dateValue={player.dateOfBirth}
+                    onChange={changeDate} maxDate={maximumDate} isSubmitted={isSubmitted} errorMessage={dateOfBirthValidation()} readOnly={player.id} />
 
-            <div className="form-group">
-                <FormSubmitNotification successCondition={isSubmitted && successMessage} errorCondition={savePlayerError} successMessage={successMessage} errorMessage='Error saving player' />
-                <button id="playerButton" className="btn btn-primary save-button">{player.rank ? 'Update' : 'Add'}</button>
-                <button id="clearButton" type="button" onClick={clearForm} className="btn btn-secondary">Clear Form</button>
-            </div>
-        </form >
+                <div className="form-group">
+                    <FormSubmitNotification successCondition={isSubmitted && successMessage} errorCondition={savePlayerError} successMessage={successMessage} errorMessage='Error saving player' />
+                    <button id="playerButton" className="btn btn-primary save-button">{player.rank ? 'Update' : 'Add'}</button>
+                    <button id="clearButton" type="button" onClick={clearForm} className="btn btn-secondary">Clear Form</button>
+                </div>
+            </form >
+        </>
     );
 };
 

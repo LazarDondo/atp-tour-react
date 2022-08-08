@@ -19,7 +19,7 @@ class AllPlayers extends React.Component {
     }
 
     changePage = (pagination) => {
-        this.props.get_players(pagination, this.firstName.current.value, this.lastName.current.value);
+        this.props.get_players(pagination, this.firstName.current.value, this.lastName.current.value, this.birthCountry);
     }
 
     search = () => {
@@ -28,11 +28,19 @@ class AllPlayers extends React.Component {
         this.props.get_players(pagingValues, this.firstName.current.value, this.lastName.current.value, this.birthCountry);
     }
 
+    clear = () => {
+        this.firstName.current.value = '';
+        this.lastName.current.value = '';
+        this.birthCountry={name: 'All'}
+        this.search();
+    }
+
     columns = [
         {
             Header: 'Rank',
+            width: '2%',
             accessor: 'rank',
-            width: '2%'
+            sortValue: 'rank'
         },
         {
             Header: 'Id',
@@ -46,6 +54,7 @@ class AllPlayers extends React.Component {
             Header: 'Name',
             width: '15%',
             accessor: 'lastName',
+            sortValue: 'lastName',
             Cell: ({ row }) => {
                 return (
                     <div>
@@ -57,8 +66,9 @@ class AllPlayers extends React.Component {
         },
         {
             Header: 'Birth Country',
-            accessor: 'birthCountry',
             width: '8%',
+            accessor: 'birthCountry',
+            sortValue: 'birthCountry.name',
             Cell: ({ row }) => {
                 return (
                     <div>
@@ -69,18 +79,21 @@ class AllPlayers extends React.Component {
         },
         {
             Header: 'Date of birth',
+            width: '9%',
             accessor: 'dateOfBirth',
-            width: '9%'
+            sortValue: 'dateOfBirth',
         },
         {
             Header: 'Current Points',
+            width: '10%',
             accessor: 'currentPoints',
-            width: '10%'
+            sortValue: 'currentPoints',
         },
         {
             Header: 'Live Points',
+            width: '9%',
             accessor: 'livePoints',
-            width: '9%'
+            sortValue: 'livePoints',
         }
     ];
 
@@ -105,12 +118,15 @@ class AllPlayers extends React.Component {
                         <label htmlFor="lastName">Last Name</label>
                         <input id="searchLastName" className="form-control" type="text" name="lastName" ref={this.lastName} />
                     </div>
-                    <div className="col-md-5">
+                    <div className="col-md-4">
                         <SyncSelect name='birthCountry' label='Birth Country' changeFieldValue={this.changeCountryValue}
-                            url='country' getLabel={country => country.name} getValue={country => country} />
+                            url='country' getLabel={country => country.name} getValue={country => country} showAll={true}/>
                     </div>
                     <div className="col-md-1">
-                        <button className="btn btn-primary search-button" onClick={() => this.search()}>Search</button>
+                        <button className="btn btn-primary filter-button" onClick={() => this.search()}>Search</button>
+                    </div>
+                    <div className="col-md-1">
+                        <button className="btn btn-secondary filter-button" onClick={() => this.clear()}>Clear</button>
                     </div>
                 </div >
                 {this.props.players ? <BasicTable id="players" columns={this.columns} data={this.props.players}
