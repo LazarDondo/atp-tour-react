@@ -10,6 +10,7 @@ export const BasicTable = ({ id, columns, data, hiddenColumns, action, rowClickA
     const { number, size } = data;
 
     const sortTable = (column) => {
+        console.log(column);
         var sortDir;
         if (sortColumn !== column) {
             sortDir = 'asc';
@@ -46,7 +47,7 @@ export const BasicTable = ({ id, columns, data, hiddenColumns, action, rowClickA
                             {headerGroups.map(headerGroup => (
                                 <tr {...headerGroup.getHeaderGroupProps()}>
                                     {headerGroup.headers.map(column => (
-                                        <th onClick={() => sortTable(column.id)} {...column.getHeaderProps({ style: { width: column.width } })}>{column.render("Header")} <i className="fa fa-sort"></i></th>
+                                        <th onClick={() => column.sortValue ? sortTable(column.sortValue) : undefined} {...column.getHeaderProps({ style: { width: column.width } })}>{column.render("Header")} {column.sortValue ? <i className="fa fa-sort"></i> : undefined}</th>
                                     ))}
                                 </tr>
                             ))}

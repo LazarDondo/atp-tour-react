@@ -26,3 +26,4 @@ export const register = formValues => async dispatch => {
 
 export * from './playerActions';
 export * from './tournamentActions';
+export * from './matchesActions';

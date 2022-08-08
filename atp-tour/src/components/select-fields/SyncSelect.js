@@ -1,19 +1,22 @@
 import atp from "../../apis/atp";
 import Select from 'react-select'
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const SyncSelect = ({ id, name, label, filter, isSubmitted, errorMessage, changeFieldValue, url, getLabel, getValue }) => {
-
+const SyncSelect = ({ id, name, label, showAll, isSubmitted, errorMessage, changeFieldValue, url, 
+    getLabel, getValue, className, accessor }) => {
+    const maxValue=100000;
     const [selectValues, setSelectValues] = useState([]);
+
     useEffect(() => {
         (async () => {
-            const { data } = await atp.get(url);
-            if (filter) {
-                data.unshift({ name: 'All' });
+            const { data } = await atp.get(url + '?size='+maxValue);
+            if (showAll) {
+                accessor ? data[accessor].unshift({ name: 'All' }) : data.unshift({ name: 'All' })
             }
-            setSelectValues(data);
+            const content = 'content';
+            accessor ? setSelectValues(data[content]) : setSelectValues(data)
         })();
-    },[filter, url]);
+    }, [showAll, url, accessor]);
 
     const changeValue = (value) => {
         changeFieldValue(value);
@@ -26,11 +29,12 @@ const SyncSelect = ({ id, name, label, filter, isSubmitted, errorMessage, change
             );
         }
     }
+
     return (
         <>
             <label htmlFor={name}>{label}</label>
-            <Select id={id} name={name} className='form-input' options={selectValues} onChange={changeValue}
-                getOptionLabel={getLabel} getOptionValue={getValue} />
+            <Select id={id} name={name} className={`form-input ${className}`} options={selectValues} onChange={changeValue}
+                getOptionLabel={getLabel} getOptionValue={getValue}/>
             {renderError()}
         </>
     );

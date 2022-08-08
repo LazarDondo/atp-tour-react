@@ -11,3 +11,8 @@ export const SAVE_PLAYER_ERROR='savePlayerError';
 export const GET_TOURNAMENTS='getTournaments';
 export const SAVE_TOURNAMENT='saveTournament';
 export const SAVE_TOURNAMENT_ERROR='saveTournamentError';
+
+export const GET_MATCHES='getMatches';
+export const SAVE_MATCHES='saveMatches';
+export const SAVE_MATCHES_ERROR='saveMatchesError';
+export const PREVIEW_MATCH='previewMatch';
