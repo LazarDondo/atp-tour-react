@@ -1,12 +1,20 @@
 import React from "react";
 import { connect } from 'react-redux';
 import { BasicTable } from "../../table/BasicTable";
-import { get_matches, find_match } from "../../../redux/actions";
+import { get_matches, find_match, update_matches } from "../../../redux/actions";
 import SyncSelect from '../../select-fields/SyncSelect';
+import Dropdown from 'react-dropdown';
 import './AllMatches.css';
-
+import { TOURNAMENT_TYPE_GRAND_SLAM } from "../../../constants";
 
 class AllMatches extends React.Component {
+
+    constructor() {
+        super();
+        this.grandSlamResults = [{ value: 'Select' }, { value: '3:0' }, { value: '3:1' }, { value: '3:2' }, { value: '0:3' }, { value: '1:3' }, { value: '2:3' }, { value: '1-retired' }, { value: '2-retired' }];
+        this.mastersResults = [{ value: 'Select' }, { value: '2:0' }, { value: '2:1' }, { value: '0:2' }, { value: '1:2' }, { value: '1-retired' }, { value: '2-retired' }];
+        this.results = [];
+    }
 
     componentDidMount = () => {
         this.props.get_matches();
@@ -17,12 +25,21 @@ class AllMatches extends React.Component {
     }
 
     search = () => {
+        this.results=[];
         const { number, size } = this.props.matches;
         const pagingValues = { number, size };
         this.props.get_matches(pagingValues, this.tournament, this.firstPlayer, this.secondPlayer);
     }
 
     columns = [
+        {
+            Header: 'Id',
+            accessor: 'id'
+        },
+        {
+            Header: 'Version',
+            accessor: 'version'
+        },
         {
             Header: 'Tournament',
             width: '14%',
@@ -66,7 +83,7 @@ class AllMatches extends React.Component {
         },
         {
             Header: 'Match Date',
-            width: '10%',
+            width: '12%',
             accessor: 'matchDate',
             sortValue: 'matchDate',
             Cell: ({ row }) => {
@@ -88,6 +105,19 @@ class AllMatches extends React.Component {
             width: '3%',
             accessor: 'result',
             sortValue: 'result',
+            Cell: ({ row }) => {
+                const possibleResults = row.values.tournament && row.values.tournament.tournamentType === TOURNAMENT_TYPE_GRAND_SLAM ?
+                    this.grandSlamResults : this.mastersResults;
+
+                return (
+                    <>
+                        {row.values.result ?
+                            row.values.result :
+                            <Dropdown options={possibleResults} onChange={(e) => this.changeResult(row.values, e.value)}/>
+                        }
+                    </>
+                )
+            }
         },
         {
             Header: 'Winner',
@@ -110,25 +140,47 @@ class AllMatches extends React.Component {
         this.props.find_match(value);
     }
 
+    changeResult = (row, value, e) => {
+        if (value === 'Select') {
+            const index = this.results.indexOf(row);
+            if (index !== -1)
+                this.results.splice(index, 1);
+        }
+        else {
+            row.result = value;
+            this.results.push(row);
+        }
+    }
+
+    saveMatches = () => {
+        const { number, size } = this.props.matches;
+        const pagingValues = { number, size };
+        this.props.update_matches(pagingValues, this.tournament, this.firstPlayer, this.secondPlayer, this.results);
+        this.results=[];
+    }
+
     render() {
         return (
             <>
                 <h2 className="table-title">Matches</h2>
                 <div className="row">
-                    <div className="col-md-4">
-                        <SyncSelect name='tournament' label='Tournament' changeFieldValue={(value) => this.tournament=value}
+                    <div className="col-md-3">
+                        <SyncSelect name='tournament' label='Tournament' changeFieldValue={(value) => this.tournament = value} showAll={true}
                             url='tournament' getLabel={tournament => tournament.name} getValue={tournament => tournament} accessor='content' />
                     </div>
                     <div className="col-md-3">
-                        <SyncSelect name='firstPlayer' label='First Player' changeFieldValue={(value) => this.firstPlayer=value}
+                        <SyncSelect name='firstPlayer' label='First Player' changeFieldValue={(value) => this.firstPlayer = value} showAll={true}
                             url='player' getLabel={player => player.firstName + ' ' + player.lastName} getValue={player => player} accessor='content' />
                     </div>
                     <div className="col-md-3">
-                        <SyncSelect name='secondPlayer' label='Second Player' changeFieldValue={(value) => this.secondPlayer=value}
+                        <SyncSelect name='secondPlayer' label='Second Player' changeFieldValue={(value) => this.secondPlayer = value} showAll={true}
                             url='player' getLabel={player => player.firstName + ' ' + player.lastName} getValue={player => player} accessor='content' />
                     </div>
                     <div className="col-md-1">
                         <button className="btn btn-primary filter-button" onClick={() => this.search()}>Search</button>
+                    </div>
+                    <div className="col-md-2">
+                        <button className="btn btn-secondary filter-button" onClick={() => this.saveMatches()}>Save Matches</button>
                     </div>
                 </div >
                 {this.props.matches ? <BasicTable id="matches" columns={this.columns} data={this.props.matches}
@@ -144,4 +196,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { get_matches, find_match })(AllMatches);
+export default connect(mapStateToProps, { get_matches, find_match, update_matches })(AllMatches);
