@@ -44,8 +44,8 @@ class Header extends React.Component {
                         <Link className="language" to="#" onClick="">eng</Link>
                         <Link className="language" to="#" onClick="">срп</Link>
                     </div >
-                    <Link className="nav-link" to="login">Login</Link>
-                    <Link className="nav-link" to="player" onClick="logout()" > Logout</Link >
+                    {!this.props.loggedUser?<Link className="nav-link" to="login">Login</Link>:''}
+                    {this.props.loggedUser?<Link className="nav-link" to="player" onClick="logout()" > Logout</Link >:''}
                 </div >
             </nav >
         );
