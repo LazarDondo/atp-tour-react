@@ -11,12 +11,7 @@ class AllTournaments extends React.Component {
         super();
         this.name = React.createRef();
         this.tournamentType = React.createRef();
-        this.hostCountry = React.createRef();
-        this.tournamentTypes = [
-            { label: 'All', value: 'All' },
-            { label: 'Grand Slam', value: 'Grand Slam' },
-            { label: 'Masters 1000', value: 'Masters 1000' }
-        ];
+        this.hostCountry={name: 'All'}
     }
 
     componentDidMount() {
@@ -36,7 +31,7 @@ class AllTournaments extends React.Component {
     clear = () => {
         this.name.current.value = '';
         this.tournamentType.value = 'All';
-        this.hostCountry = 'All';
+        this.hostCountry = { name: 'All' };
         this.search();
     }
 
@@ -86,36 +81,37 @@ class AllTournaments extends React.Component {
 
     changeCountryValue = (value) => {
         this.hostCountry = value;
+        this.search();
     }
 
     rowClickAction = (value) => {
         this.props.find_tournament(value.id);
     }
 
+
     render() {
+
         return (
             <>
                 <h2 id="table-title">Tournaments</h2>
                 <div className="row">
-                    <div className="col-md-3">
+                    <div className="col-md-4">
                         <label htmlFor="name">Name</label>
-                        <input id="searchByName" className="form-control" type="text" name="name" ref={this.name} />
+                        <input id="searchByName" className="form-control" type="text" name="name" ref={this.name} onChange={() => this.search()} />
                     </div>
                     <div className="col-md-3">
                         <label htmlFor="tournamentType">Type</label>
-                        <select id="searchByType" className="form-control" type="text" name="tournamentType" ref={input => this.tournamentType = input}>
+                        <select id="searchByType" className="form-control" type="text" name="tournamentType" onChange={() => this.search()} ref={input => this.tournamentType = input}>
+                            <option key='All'>All</option>
                             {
-                                this.tournamentTypes.map((tournamentType) =>
+                                this.props.tournamentTypes.map((tournamentType) =>
                                     <option key={tournamentType.value}>{tournamentType.label}</option>)
                             }
                         </select>
                     </div>
                     <div className="col-md-4">
-                        <SyncSelect name='birthCountry' label='Host Country' changeFieldValue={this.changeCountryValue}
+                        <SyncSelect id="hostCountry" name='hostCountry' label='Host Country' changeFieldValue={this.changeCountryValue} value={this.hostCountry}
                             url='country' getLabel={country => country.name} getValue={country => country} showAll={true} />
-                    </div>
-                    <div className="col-md-1">
-                        <button className="btn btn-primary filter-button" onClick={() => this.search()}>Search</button>
                     </div>
                     <div className="col-md-1">
                         <button className="btn btn-secondary filter-button" onClick={() => this.clear()}>Clear</button>

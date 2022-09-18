@@ -1,9 +1,10 @@
-import { GET_MATCHES, SAVE_MATCHES, SAVE_MATCHES_ERROR, PREVIEW_MATCH } from "./types";
+import { GET_MATCHES, PREVIEW_MATCH } from "./types";
 import atp from '../../apis/atp';
 
 export const get_matches = (pagingValues, tournament, firstPlayer, secondPlayer) => async dispatch => {
-    let params = { };
-    let body = {tournament, firstPlayer, secondPlayer }
+    let params = {};
+    let body = {};
+
     if (pagingValues) {
         const { page, size, sort } = pagingValues;
         params.page = page;
@@ -11,7 +12,19 @@ export const get_matches = (pagingValues, tournament, firstPlayer, secondPlayer)
         params.sort = sort;
     }
 
-    await atp.post('/matches/filter',  body, { params: params })
+    if (tournament && tournament.name !== 'All') {
+        body.tournament = tournament;
+    }
+
+    if (firstPlayer && firstPlayer.firstName !== 'All') {
+        body.firstPlayer = firstPlayer;
+    }
+
+    if (secondPlayer && secondPlayer.firstName !== 'All') {
+        body.secondPlayer = secondPlayer;
+    }
+
+    await atp.post('/matches/filter', body, { params: params })
         .then(
             (result) => {
                 dispatch({ type: GET_MATCHES, foundMatches: result.data });
@@ -21,18 +34,42 @@ export const get_matches = (pagingValues, tournament, firstPlayer, secondPlayer)
             });
 }
 
-export const update_match = matches => async dispatch => {
-    atp.put('/matches', matches)
+export const update_matches = (pagingValues, tournament, firstPlayer, secondPlayer, results) => async dispatch => {
+    let params = {};
+    let body = {};
+
+    if (pagingValues) {
+        const { page, size } = pagingValues;
+        params.page = page;
+        params.size = size;
+        params.sort = 'matchDate,asc';
+    }
+
+    if (tournament && tournament.name !== 'All') {
+        body.tournament = tournament;
+    }
+
+    if (firstPlayer && firstPlayer.firstName !== 'All') {
+        body.firstPlayer = firstPlayer;
+    }
+
+    if (secondPlayer && secondPlayer.firstName !== 'All') {
+        body.secondPlayer = secondPlayer;
+    }
+
+    body.results = results;
+
+    atp.put('/matches', body, { params: params })
         .then(
-            (updatedMatches) => {
-                dispatch({ type: SAVE_MATCHES, savedMatches: updatedMatches.data, successMessage: 'Matches updated successfully' });
+            (result) => {
+                dispatch({ type: GET_MATCHES, foundMatches: result.data });
             },
-            saveMatchesError => {
-                dispatch({ type: SAVE_MATCHES_ERROR, saveMatchesError });
+            error => {
+                dispatch({ type: GET_MATCHES, matches: { content: [] } });
             });
 }
 
-export const find_match = (match)=>{
+export const find_match = (match) => {
     return {
         type: PREVIEW_MATCH,
         payload: match

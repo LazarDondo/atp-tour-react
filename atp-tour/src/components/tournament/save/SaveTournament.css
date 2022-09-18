@@ -1,8 +1,20 @@
-#saveTournament{
-    margin-top:35%;
+#saveTournament {
+    margin-top: 35%;
     margin-left: 5%;
-} 
+}
 
-#tournamentTitle{
+#tournamentTitle {
     width: 300px;
+}
+
+#showParticipants {
+    width: 38%;
+    margin-right: 5%;
+}
+
+.remove-participant{
+    font-size:25px;
+    color:red;
+    padding-left: 5%;
+    cursor: pointer;
 }

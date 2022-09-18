@@ -12,6 +12,7 @@ class AllPlayers extends React.Component {
         super();
         this.firstName = React.createRef();
         this.lastName = React.createRef();
+        this.birthCountry = { name: 'All' }
     }
 
     componentDidMount() {
@@ -31,7 +32,7 @@ class AllPlayers extends React.Component {
     clear = () => {
         this.firstName.current.value = '';
         this.lastName.current.value = '';
-        this.birthCountry={name: 'All'}
+        this.birthCountry = { name: 'All' }
         this.search();
     }
 
@@ -99,6 +100,7 @@ class AllPlayers extends React.Component {
 
     changeCountryValue = (value) => {
         this.birthCountry = value;
+        this.search();
     }
 
     rowClickAction = (value) => {
@@ -110,20 +112,17 @@ class AllPlayers extends React.Component {
             <>
                 <h2 className="table-title">Players</h2>
                 <div className="row">
-                    <div className="col-md-3">
+                    <div className="col-md-4">
                         <label htmlFor="firstName">First Name</label>
-                        <input id="searchFirstName" className="form-control" type="text" name="firstName" ref={this.firstName} />
-                    </div>
-                    <div className="col-md-3">
-                        <label htmlFor="lastName">Last Name</label>
-                        <input id="searchLastName" className="form-control" type="text" name="lastName" ref={this.lastName} />
+                        <input id="searchFirstName" className="form-control" type="text" name="firstName" ref={this.firstName} onChange={this.search}/>
                     </div>
                     <div className="col-md-4">
-                        <SyncSelect name='birthCountry' label='Birth Country' changeFieldValue={this.changeCountryValue}
-                            url='country' getLabel={country => country.name} getValue={country => country} showAll={true}/>
+                        <label htmlFor="lastName">Last Name</label>
+                        <input id="searchLastName" className="form-control" type="text" name="lastName" ref={this.lastName} onChange={this.search}/>
                     </div>
-                    <div className="col-md-1">
-                        <button className="btn btn-primary filter-button" onClick={() => this.search()}>Search</button>
+                    <div className="col-md-3">
+                        <SyncSelect name='birthCountry' label='Birth Country' changeFieldValue={this.changeCountryValue}
+                            url='country' getLabel={country => country.name} getValue={country => country} showAll={true} value={this.birthCountry} />
                     </div>
                     <div className="col-md-1">
                         <button className="btn btn-secondary filter-button" onClick={() => this.clear()}>Clear</button>

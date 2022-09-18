@@ -32,6 +32,17 @@ export const get_tournaments = (pagingValues, name, tournamentType, hostCountry)
             });
 }
 
+export const add_tournament = tournament => async dispatch => {
+    atp.post('/tournament', tournament)
+        .then(
+            (savedTournament) => {
+                dispatch({ type: SAVE_TOURNAMENT, savedTournament: savedTournament.data, successMessage: 'Successfully added new tournament' });
+            },
+            saveTournamentError => {
+                dispatch({ type: SAVE_TOURNAMENT, saveTournamentError });
+            });
+}
+
 
 export const update_tournament = tournament => async dispatch => {
     atp.put('/tournament', tournament)

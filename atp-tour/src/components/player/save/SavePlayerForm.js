@@ -46,7 +46,7 @@ const SavePlayerForm = ({ onSubmit, handleSubmit, successMessage, savePlayerErro
     }
 
     const birthCountryValidation = () => {
-        if (isSubmitted && !player.birthCountry) {
+        if (isSubmitted && Object.keys(player.birthCountry).length===0) {
             return 'You must select birth country';
         }
     }

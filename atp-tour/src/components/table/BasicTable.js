@@ -10,7 +10,6 @@ export const BasicTable = ({ id, columns, data, hiddenColumns, action, rowClickA
     const { number, size } = data;
 
     const sortTable = (column) => {
-        console.log(column);
         var sortDir;
         if (sortColumn !== column) {
             sortDir = 'asc';
